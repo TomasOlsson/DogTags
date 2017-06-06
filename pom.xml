@@ -70,20 +70,6 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>com.gmail.filoghost</groupId>
-            <artifactId>holographicdisplays</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>/Users/charliej/Documents/Programming/Libraries/HolographicDisplays.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>be.maximvdw</groupId>
-            <artifactId>MVdWPlaceholderAPI</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>/Users/charliej/Documents/Programming/Libraries/MVdWPlaceholderAPI.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.0.8</version>
@@ -100,13 +86,6 @@
             <artifactId>paper-api</artifactId>
             <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.maximvdw</groupId>
-            <artifactId>QAPlugin</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>/Users/charliej/Documents/Programming/Libraries/QAPlugin.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
