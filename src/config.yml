@@ -1,0 +1,55 @@
+# DogTags - Main Configuration #
+
+dogtags:
+  example:
+    prefix: '&8[&bExampleTag&8]'
+    description: '&7The default DogTags description!'
+    permission: false
+  pvppro:
+    prefix: '&8[&cPvP&4Pro&8]'
+    description: '&7The 420 Kidz!'
+    item: WOOL
+    damage: 2
+    permission: true
+gui:
+  name: Available DogTags (%total%)
+  item: NAME_TAG
+  show-no-access: true
+  dynamic: true
+  size: 36
+  format:
+    name: '%id% Tag'
+    lore:
+    - '&8» &7%description%'
+    - '&8» &7You %permission% &7use this!'
+replacement:
+  permission:
+    true: '&aCAN'
+    false: '&cCANNOT'
+
+message:
+  NO_PERMISSION: '&6[&eDogTags&6] &7You do not have permission to do that.'
+  RELOAD: '&6[&eDogTags&6] &7Reloaded Configuration!'
+  CREATED: '&6[&eDogTags&6] &7Created &e%id% &7tag with prefix %prefix%&7.'
+  REMOVED: '&6[&eDogTags&6] &7Removed &e%id% &7tag.'
+  SET: '&6[&eDogTags&6] &7Tag &e%id% &7(%prefix%&7) selected.'
+  SET_OTHER: '&6[&eDogTags&6] &7You set %player%''s tag to &e%id% &7(%prefix%&7).'
+  SET_TAG_PREFIX: '&6[&eDogTags&6] &7The prefix for &e%id% &7has been set to &f%prefix%&7.'
+  SET_TAG_DESCRIPTION: '&6[&eDogTags&6] &7The description for &e%id% &7has been set
+    to &f%description%&7.'
+  TAG_NO_PERMISSION: '&6[&eDogTags&6] &7The %id% tag requires no permission to use.'
+  TAG_PERMISSION: '&6[&eDogTags&6] &7The &e%id%&7 tag requires &6%permission% &7to
+    use.'
+  CLEARED: '&6[&eDogTags&6] &7Your tag has been cleared.'
+  CLEARED_OTHER: '&6[&eDogTags&6] &7You have cleared &e%player%''s &7tag.'
+  ALREADY_EXISTS: '&6[&eDogTags&6] &7That tag already exists.'
+  INVALID_TAG: '&6[&eDogTags&6] &7That is an invalid tag.'
+
+storage:
+  type: FLATFILE
+  host: localhost
+  username: root
+  password: 'dankpass'
+  prefix: dogtags_
+  database: TagData
+  port: 3306
