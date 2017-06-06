@@ -52,38 +52,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>com.zelix.plugins</groupId>
-                <artifactId>zkm-plugin</artifactId>
-                <version>1.0.2</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.zelix.plugins</groupId>
-                        <artifactId>ZKM</artifactId>
-                        <version>8.0.0</version>
-                        <scope>system</scope>
-                        <systemPath>/Users/charliej/Documents/Programming/ZKM/ZKM.jar</systemPath>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>obfuscate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- Will be used to inject values into the plugin but will not be in
-                        project properties -->
-                    <isSkip>false</isSkip>
-                    <scriptFile>../script.txt</scriptFile>
-                    <classpathLibs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                    </classpathLibs>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <repositories>
@@ -139,13 +107,6 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>/Users/charliej/Documents/Programming/Libraries/QAPlugin.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.stringer</groupId>
-            <artifactId>annotations</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>/Users/charliej/Documents/Programming/Stringer/stringer-annotations.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
