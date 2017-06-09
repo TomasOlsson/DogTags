@@ -40,9 +40,32 @@ public class TagsCommand extends BaseCommand implements Listener {
         }
         return false;
     }
-    public Inventory getTagInventory(Player p){
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(DogTags.getInstance().getDataFolder(), "config.yml"));
+    private ItemStack getRemoveItem(){
+        ConfigManager.load();
+        FileConfiguration config = ConfigManager.get();
+
+        ItemStack is = new ItemStack(Material.valueOf(config.getString("gui.gui-item.item")));
+        is.setDurability(Short.valueOf(config.getString("gui.gui-item.data")));
+        ItemMeta im = is.getItemMeta();
+
+        ArrayList<String> lore = new ArrayList<>();
+
+        im.setDisplayName(ColorUtil.translate(config.getString("gui.gui-item.name")));
+
+        for(String l : config.getStringList("gui.gui-item.lore")){
+            lore.add(ColorUtil.translate(l));
+        }
+        im.setLore(lore);
+
+        is.setItemMeta(im);
+
+        return is;
+    }
+    private Inventory getTagInventory(Player p){
+        ConfigManager.load();
+        FileConfiguration config = ConfigManager.get();
+
         Integer size;
         if(config.getBoolean("gui.dynamic")){
             int available = 0;
@@ -52,6 +75,7 @@ public class TagsCommand extends BaseCommand implements Listener {
             }
 
             size = ((((available / 9) + ((available % 9 == 0) ? 0 : 1)) * 9));
+            if(size < 54) size = size + 9;
 
         }else size = config.getInt("gui.size");
 
@@ -92,7 +116,7 @@ public class TagsCommand extends BaseCommand implements Listener {
 
             DogTag dt = DogTags.getTag(tagstr);
 
-            if(dt != null && dt.getId() == tag.getId()){
+            if(dt != null && dt.getId().equalsIgnoreCase(tag.getId())){
                 is.addUnsafeEnchantment(Enchantment.WATER_WORKER, 1);
                 ItemMeta meta = is.getItemMeta();
 
@@ -106,6 +130,10 @@ public class TagsCommand extends BaseCommand implements Listener {
         }
         inv.setTitle(ColorUtil.translate(config.getString("gui.name")
             .replace("%total%", ""+available)));
+
+        // CURRENT TAG //
+        inv.setItem(getRemoveItem(), size-config.getInt("gui.gui-item.slot"));
+
         return inv.getInventory();
 
     }
@@ -131,6 +159,13 @@ public class TagsCommand extends BaseCommand implements Listener {
                 if(inv.getTitle().equalsIgnoreCase(tagGUI.getTitle())){
                 e.setCancelled(true);
 
+                if(e.getCurrentItem().isSimilar(getRemoveItem())){
+                    p.sendMessage(TagLang.CLEARED.get());
+                    p.closeInventory();
+                    StorageHandler.clearPlayerTag(p);
+                    return;
+                }
+
                 DogTag dt = DogTags.getTags().get(e.getSlot());
 
                 if(!hasPermission(p, dt)){
@@ -146,7 +181,6 @@ public class TagsCommand extends BaseCommand implements Listener {
                     StorageHandler.setUser(p, dt.getId());
 
                     p.closeInventory();
-                    return;
                 }
             }
         }

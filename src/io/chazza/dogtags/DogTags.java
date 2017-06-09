@@ -49,7 +49,6 @@ public class DogTags extends JavaPlugin {
     }
     public static void addTag(DogTag dt){
         getTags().add(dt);
-        return;
     }
     public static void removeTag(String tag){
         for(DogTag dt : tags){
@@ -60,7 +59,7 @@ public class DogTags extends JavaPlugin {
         }
     }
     public void handleReload(){
-        ConfigManager.reload();
+        ConfigManager.load();
         StorageHandler.registerTags();
     }
 

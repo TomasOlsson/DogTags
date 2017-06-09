@@ -22,6 +22,14 @@ gui:
     lore:
     - '&8» &7%description%'
     - '&8» &7You %permission% &7use this!'
+  gui-item:
+      name: '§7DogTags'
+      lore:
+      - '§cClick to remove tag.'
+      slot: 5 # How many slots back from the max
+      item: NAME_TAG
+      data: 0
+
 replacement:
   permission:
     true: '&aCAN'
