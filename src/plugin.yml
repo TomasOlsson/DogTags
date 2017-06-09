@@ -1,7 +1,7 @@
 name: DogTags
 description: "The #1 Ultra Configurable MySQL Supported Tag plugin!"
 main: io.chazza.dogtags.DogTags
-version: 1.1.5
+version: 1.1.6
 softdepend: [PlaceholderAPI]
 
 permissions:

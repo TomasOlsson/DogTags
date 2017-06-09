@@ -171,6 +171,8 @@ public class TagsCommand extends BaseCommand implements Listener {
                     return;
                 }
 
+                if(e.getSlot() > DogTags.getTags().size()) return;
+
                 DogTag dt = DogTags.getTags().get(e.getSlot());
 
                 if(!hasPermission(p, dt)){
