@@ -45,13 +45,16 @@ public class TagsCommand extends BaseCommand implements Listener {
         ConfigManager.load();
         FileConfiguration config = ConfigManager.get();
 
-        ItemStack is = new ItemStack(Material.valueOf(config.getString("gui.gui-item.item")));
-        is.setDurability(Short.valueOf(config.getString("gui.gui-item.data")));
+        Material mat = config.getString("gui.gui-item.item") != null ?
+            Material.valueOf(config.getString("gui.gui-item.item")) : Material.PAPER;
+
+        ItemStack is = new ItemStack(mat);
+        is.setDurability(Short.valueOf(ConfigManager.getInt("gui.gui-item.data")+""));
         ItemMeta im = is.getItemMeta();
 
         ArrayList<String> lore = new ArrayList<>();
 
-        im.setDisplayName(ColorUtil.translate(config.getString("gui.gui-item.name")));
+        im.setDisplayName(ColorUtil.translate(ConfigManager.getString("gui.gui-item.name")));
 
         for(String l : config.getStringList("gui.gui-item.lore")){
             lore.add(ColorUtil.translate(l));
@@ -132,7 +135,9 @@ public class TagsCommand extends BaseCommand implements Listener {
             .replace("%total%", ""+available)));
 
         // CURRENT TAG //
-        inv.setItem(getRemoveItem(), size-config.getInt("gui.gui-item.slot"));
+        if(ConfigManager.getBoolean("gui.gui-item.enabled")) {
+            inv.setItem(getRemoveItem(), size - ConfigManager.getInt("gui.gui-item.slot"));
+        }
 
         return inv.getInventory();
 

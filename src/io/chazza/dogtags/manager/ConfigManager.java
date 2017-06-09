@@ -2,7 +2,6 @@ package io.chazza.dogtags.manager;
 
 
 import io.chazza.dogtags.DogTags;
-import io.chazza.dogtags.util.ColorUtil;
 import io.chazza.dogtags.util.LogUtil;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,8 +14,20 @@ public class ConfigManager {
 
     private static File f;
     private static FileConfiguration fc;
-    public static FileConfiguration get(){
+    public static FileConfiguration get() {
         return fc;
+    }
+
+    public static String getString(String s){
+        return fc.getString(s) != null ? fc.getString(s) : "Missing Value";
+    }
+
+    public static int getInt(String s){
+        return fc.getInt(s);
+    }
+
+    public static boolean getBoolean(String s){
+        return fc.getBoolean(s);
     }
 
     public static boolean load(){

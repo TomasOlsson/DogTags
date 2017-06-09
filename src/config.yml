@@ -23,6 +23,7 @@ gui:
     - '&8» &7%description%'
     - '&8» &7You %permission% &7use this!'
   gui-item:
+      enabled: true
       name: '§7DogTags'
       lore:
       - '§cClick to remove tag.'
