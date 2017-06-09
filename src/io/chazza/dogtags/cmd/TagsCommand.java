@@ -10,6 +10,7 @@ import io.chazza.dogtags.dev.DTSelectEvent;
 import io.chazza.dogtags.manager.ConfigManager;
 import io.chazza.dogtags.util.ColorUtil;
 import io.chazza.dogtags.util.InventoryUtil;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -41,7 +42,7 @@ public class TagsCommand extends BaseCommand implements Listener {
         return false;
     }
 
-    private ItemStack getRemoveItem(){
+    private ItemStack getRemoveItem(Player p){
         ConfigManager.load();
         FileConfiguration config = ConfigManager.get();
 
@@ -54,7 +55,11 @@ public class TagsCommand extends BaseCommand implements Listener {
 
         ArrayList<String> lore = new ArrayList<>();
 
-        im.setDisplayName(ColorUtil.translate(ConfigManager.getString("gui.gui-item.name")));
+        String title = ColorUtil.translate(ConfigManager.getString("gui.gui-item.name"));
+        String id = StorageHandler.getPlayerTag(p) != null ? StorageHandler.getPlayerTag(p) : "No";
+        title = title.replace("%id%", WordUtils.capitalizeFully(id.toLowerCase()));
+
+        im.setDisplayName(title);
 
         for(String l : config.getStringList("gui.gui-item.lore")){
             lore.add(ColorUtil.translate(l));
@@ -135,8 +140,8 @@ public class TagsCommand extends BaseCommand implements Listener {
             .replace("%total%", ""+available)));
 
         // CURRENT TAG //
-        if(ConfigManager.getBoolean("gui.gui-item.enabled")) {
-            inv.setItem(getRemoveItem(), size - ConfigManager.getInt("gui.gui-item.slot"));
+        if(ConfigManager.getBoolean("gui.gui-item.enabled") && StorageHandler.getPlayerTag(p) != null) {
+            inv.setItem(getRemoveItem(p), size - ConfigManager.getInt("gui.gui-item.slot"));
         }
 
         return inv.getInventory();
@@ -164,7 +169,7 @@ public class TagsCommand extends BaseCommand implements Listener {
                 if(inv.getTitle().equalsIgnoreCase(tagGUI.getTitle())){
                 e.setCancelled(true);
 
-                if(e.getCurrentItem().isSimilar(getRemoveItem())){
+                if(e.getCurrentItem().isSimilar(getRemoveItem(p))){
                     p.sendMessage(TagLang.CLEARED.get());
                     p.closeInventory();
                     StorageHandler.clearPlayerTag(p);

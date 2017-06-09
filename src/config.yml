@@ -24,7 +24,7 @@ gui:
     - '&8» &7You %permission% &7use this!'
   gui-item:
       enabled: true
-      name: '§7DogTags'
+      name: '§b%id% Tag'
       lore:
       - '§cClick to remove tag.'
       slot: 5 # How many slots back from the max
