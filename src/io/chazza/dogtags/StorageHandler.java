@@ -22,6 +22,8 @@ public class StorageHandler {
     static FileConfiguration cnf = ConfigManager.get();
 
     public static void registerTags() {
+        cnf = ConfigManager.get();
+
         DogTags.tags = new ArrayList<>();
 
         String desc, prefix;
@@ -32,7 +34,8 @@ public class StorageHandler {
 
         if (DogTags.getStorage() == StorageEnum.FLATFILE) {
             for (String tag : cnf.getConfigurationSection("dogtags").getKeys(false)) {
-                desc = ColorUtil.translate(cnf.getString("dogtags." + tag + ".description"));
+                desc = !cnf.getString("dogtags." + tag + ".description").isEmpty()
+                    ? ColorUtil.translate(cnf.getString("dogtags." + tag + ".description")) : "";
                 prefix = ColorUtil.translate(cnf.getString("dogtags." + tag + ".prefix"));
                 permission = cnf.getBoolean("dogtags." + tag + ".permission");
 
