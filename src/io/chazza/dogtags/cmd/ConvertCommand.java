@@ -54,7 +54,7 @@ public class ConvertCommand extends BaseCommand implements Listener {
 
            // config.save(new File(DogTags.getInstance().getDataFolder(), "config.yml"));
             DogTags.getInstance().handleReload();
-        if(sender instanceof Player) sender.sendMessage("Â§6[Â§eDogTagsÂ§6] Â§fCheck Console for Information.");
+        if(sender instanceof Player) sender.sendMessage("§6[§eDogTags§6] §fCheck Console for Information.");
     }
 }
 
