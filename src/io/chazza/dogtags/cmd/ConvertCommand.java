@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Subcommand;
 import io.chazza.dogtags.DogTags;
+import io.chazza.dogtags.StorageEnum;
 import io.chazza.dogtags.StorageHandler;
 import io.chazza.dogtags.TagLang;
 import io.chazza.dogtags.dev.DogTag;
@@ -27,6 +28,7 @@ import java.io.IOException;
 @CommandAlias("dtconvert")
 public class ConvertCommand extends BaseCommand implements Listener {
 
+
     @Subcommand("DeluxeTags") @CommandCompletion("deluxetags")
     public void onCommand(CommandSender sender){
         if(!sender.hasPermission("dogtags.convert")) {sender.sendMessage(TagLang.NO_PERMISSION.get()); return; }
@@ -40,16 +42,19 @@ public class ConvertCommand extends BaseCommand implements Listener {
         for(String tags : fc.getConfigurationSection("deluxetags").getKeys(false)){
             String prefix = fc.getString("deluxetags."+tags+".tag");
             String description = fc.getString("deluxetags."+tags+".description");
-
-            config.set("dogtags."+tags+".prefix", prefix);
-            config.set("dogtags."+tags+".description", description);
-            config.set("dogtags."+tags+".permission", true);
+            if (DogTags.getStorage() == StorageEnum.FLATFILE) {
+            	config.set("dogtags."+tags+".prefix", prefix);
+            	config.set("dogtags."+tags+".description", description);
+            	config.set("dogtags."+tags+".permission", true);
+            }else{
+                DogTags.getConnection().insertTag(tags, prefix, description, true);
+            }
             LogUtil.outputMsg("Converted "+tags+" with prefix "+prefix + " and description "+description);
         }
 
            // config.save(new File(DogTags.getInstance().getDataFolder(), "config.yml"));
             DogTags.getInstance().handleReload();
-        if(sender instanceof Player) sender.sendMessage("§6[§eDogTags§6] §fCheck Console for Information.");
+        if(sender instanceof Player) sender.sendMessage("Â§6[Â§eDogTagsÂ§6] Â§fCheck Console for Information.");
     }
 }
 
