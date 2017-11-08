@@ -1,4 +1,4 @@
-package io.chazza.dogtags;
+ppackage io.chazza.dogtags;
 
 import io.chazza.dogtags.DogTags;
 import io.chazza.dogtags.StorageEnum;
@@ -68,6 +68,7 @@ public class StorageHandler {
             cnf.set("dogtags."+tag+".prefix", prefix);
             cnf.set("dogtags."+tag+".description", description);
             cnf.set("dogtags."+tag+".permission", true);
+            
 
             DogTags.getInstance().handleReload();
 
@@ -114,6 +115,16 @@ public class StorageHandler {
             return DogTags.getConnection().getTag(p.getUniqueId());
         }
     }
+    
+    public static void setPerm(String tag, boolean permission){
+        if (DogTags.getStorage() == StorageEnum.FLATFILE) {
+
+        	cnf.set("dogtags."+tag+".permission", permission);
+
+        }else{
+            DogTags.getConnection().setTagPerm(tag, permission);
+        }
+    }
 
     public static void clearPlayerTag(Player p){
         if (DogTags.getStorage() == StorageEnum.FLATFILE) {
@@ -128,5 +139,14 @@ public class StorageHandler {
         }
     }
 
+    public static boolean getPerm(String tag){
+        if (DogTags.getStorage() == StorageEnum.FLATFILE) {
+
+        	return cnf.getBoolean("dogtags."+tag+".permission");
+
+        }else{
+        	return DogTags.getConnection().getTagPerm(tag);
+        }
+    }
 
 }
