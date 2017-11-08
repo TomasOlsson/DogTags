@@ -33,7 +33,7 @@ public class MySQLConnection {
 
     Connection conn = null;
     public void testConnection() throws SQLException, ClassNotFoundException {
-        String databaseURL = "jdbc:mysql://" + host + ":" + port + "/" + database + "?user=" + username + "&password="+password;
+        String databaseURL = "jdbc:mysql://" + host + ":" + port + "/" + database + "?user=" + username + "&password="+password + "&autoReconnect=true&failOverReadOnly=false&maxReconnects=10";
         try {
             conn = DriverManager.getConnection(databaseURL);
             if (conn != null) {
@@ -111,9 +111,25 @@ public class MySQLConnection {
             LogUtil.outputMsg("Failed to get tag " + id + "'s prefix.");
             LogUtil.outputMsg("Error: " + e.getLocalizedMessage());
         }
-        return "§8["+id+"§8]";
+        return id;
     }
 
+    
+    public String getTagCheck(String id){
+        try {
+            ResultSet result = conn.createStatement().executeQuery("SELECT id FROM " + tagData + " WHERE id = '"+id+"';");
+
+            while (result.next()) {
+                return result.getString("id");
+            }
+        } catch (SQLException e) {
+            LogUtil.outputMsg("Failed to find tag " + id + ".");
+            LogUtil.outputMsg("Error: " + e.getLocalizedMessage());
+        }
+        return id;
+    }
+    
+    
     public List<String> getTags(){
         List<String> tags = new ArrayList<>();
         try {
@@ -138,7 +154,7 @@ public class MySQLConnection {
             LogUtil.outputMsg("Failed to get tag " + id + "'s prefix.");
             LogUtil.outputMsg("Error: " + e.getLocalizedMessage());
         }
-        return "§7Default DogTags Description";
+        return "Â§7Default DogTags Description";
     }
 
 
@@ -204,7 +220,18 @@ public class MySQLConnection {
         }
     }
 
+    public void setTagPerm(String tag, boolean permission){
+        try {
+            PreparedStatement prep = conn.prepareStatement("UPDATE " + tagData + " SET permission = ? WHERE id = ?;");
+            prep.setBoolean(1, permission);
+            prep.setString(2, tag);
+            prep.execute();
 
+        } catch(SQLException e){
+            Bukkit.getLogger().info("[DogTags] Failed to set perms to "+ tag + " in database.");
+            Bukkit.getLogger().info("[DogTags] Error '"+e.getLocalizedMessage()+"'.");
+        }
+    }
 
     public String getTag(UUID id){
         try {
