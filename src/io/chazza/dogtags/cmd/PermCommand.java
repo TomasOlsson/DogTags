@@ -5,10 +5,10 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import io.chazza.dogtags.DogTags;
+import io.chazza.dogtags.StorageHandler;
 import io.chazza.dogtags.TagLang;
-import io.chazza.dogtags.dev.DogTag;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 /**
@@ -18,20 +18,18 @@ import org.bukkit.event.Listener;
 public class PermCommand extends BaseCommand implements Listener {
 
     @Subcommand("perm|permission") @Syntax("<tag>")
-    public void onCommand(Player p, String ID){
-       if(DogTags.getTag(ID) != null){
-           DogTag dt = DogTags.getTag(ID);
-
-           if(dt.hasPermission()) p.sendMessage(TagLang.TAG_PERMISSION.get()
-               .replace("%id%", dt.getId())
-               .replace("%permission%", "dogtags.use."+dt.getId().toLowerCase()));
-
-           else p.sendMessage(TagLang.TAG_NO_PERMISSION.get().replace("%id%", dt.getId()));
-           return;
-       }else {
-           p.sendMessage(TagLang.INVALID_TAG.get());
-           return;
-       }
+    public void onCommand(CommandSender sender, String ID){
+    	if(!sender.hasPermission("dogtags.perm")) {sender.sendMessage(TagLang.NO_PERMISSION.get()); return; }
+    		if(DogTags.getTag(ID) != null){
+    			if (StorageHandler.getPerm(ID) == false) { StorageHandler.setPerm(ID, true); sender.sendMessage(TagLang.TAG_PERMISSION.get()
+    		               .replace("%id%", ID)
+    		               .replace("%permission%", "dogtags.use."+ID.toLowerCase())); }
+    			else { StorageHandler.setPerm(ID, false); sender.sendMessage(TagLang.TAG_NO_PERMISSION.get().replace("%id%", ID)); }
+    			
+    		}else {
+    			sender.sendMessage(TagLang.INVALID_TAG.get());
+    			return;
+    	}
     }
 
 }
