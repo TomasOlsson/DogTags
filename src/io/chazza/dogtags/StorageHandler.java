@@ -1,4 +1,4 @@
-ppackage io.chazza.dogtags;
+package io.chazza.dogtags;
 
 import io.chazza.dogtags.DogTags;
 import io.chazza.dogtags.StorageEnum;
@@ -9,9 +9,12 @@ import io.chazza.dogtags.util.ColorUtil;
 import io.chazza.dogtags.util.LogUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -19,10 +22,13 @@ import java.util.ArrayList;
  */
 public class StorageHandler {
 
-    static FileConfiguration cnf = ConfigManager.get();
+    //static FileConfiguration cnf = YamlConfiguration.loadConfiguration(new File(DogTags.getInstance().getDataFolder(), "config.yml"));
 
+	static FileConfiguration cnf = YamlConfiguration.loadConfiguration(new File(DogTags.getInstance().getDataFolder(), "config.yml"));
+	static File conf = new File(DogTags.getInstance().getDataFolder(), "config.yml");
+	
     public static void registerTags() {
-        cnf = ConfigManager.get();
+        //cnf = ConfigManager.get();
 
         DogTags.tags = new ArrayList<>();
 
@@ -64,13 +70,16 @@ public class StorageHandler {
 
     public static void addTag(String tag, String prefix, String description, boolean permission){
         if (DogTags.getStorage() == StorageEnum.FLATFILE) {
-
             cnf.set("dogtags."+tag+".prefix", prefix);
             cnf.set("dogtags."+tag+".description", description);
             cnf.set("dogtags."+tag+".permission", true);
+            try {
+				cnf.save(conf);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             
-
-            DogTags.getInstance().handleReload();
 
         }else{
             DogTags.getConnection().insertTag(tag, prefix, description, permission);
@@ -81,8 +90,12 @@ public class StorageHandler {
         if (DogTags.getStorage() == StorageEnum.FLATFILE) {
 
             cnf.set("dogtags."+tag, null);
-
-            DogTags.getInstance().handleReload();
+            try {
+				cnf.save(conf);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
         }else{
             DogTags.getConnection().removeTag(tag);
@@ -120,6 +133,12 @@ public class StorageHandler {
         if (DogTags.getStorage() == StorageEnum.FLATFILE) {
 
         	cnf.set("dogtags."+tag+".permission", permission);
+            try {
+				cnf.save(conf);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
         }else{
             DogTags.getConnection().setTagPerm(tag, permission);
@@ -150,3 +169,4 @@ public class StorageHandler {
     }
 
 }
+
