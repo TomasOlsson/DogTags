@@ -6,10 +6,8 @@ import io.chazza.dogtags.DogTags;
 import io.chazza.dogtags.StorageHandler;
 import io.chazza.dogtags.TagLang;
 import io.chazza.dogtags.dev.DogTag;
-import io.chazza.dogtags.manager.ConfigManager;
 import io.chazza.dogtags.util.ColorUtil;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
 /**
@@ -22,7 +20,7 @@ public class CreateCommand extends BaseCommand implements Listener {
     public void onCommand(CommandSender sender, String ID, @Optional @Single String prefix, @Optional String description){
         if(!sender.hasPermission("dogtags.create")) {sender.sendMessage(TagLang.NO_PERMISSION.get()); return; }
 
-       if(ConfigManager.get().getString("dogtags."+ID) == null){
+       if(DogTags.getTag(ID) == null){
            prefix = prefix != null ? ColorUtil.translate(prefix) : "§8[§e§l"+ID+"§8]";
            description = description != null ? ColorUtil.translate(description) : "§7Default Description!";
 
